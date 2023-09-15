@@ -4,9 +4,10 @@ import Header from '@/components/header';
 import "@/share/global.scss";
 
 export async function generateStaticParams() {
-  const data = await microcms.get({endpoint: "posts",fields:"title,updatedAt"})
+  const data = await microcms.getAllContentIds({endpoint: "posts",fields:"title,updatedAt"})
   //console.log(data)
-  const paths = data.contents.map((post) => ({id: [post.id.toString()],}));
+  //const paths = data.contents.map((post) => ({id: [post.id.toString()],}));
+  const paths = data;
   return paths
 }
 
