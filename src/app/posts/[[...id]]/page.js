@@ -1,5 +1,7 @@
 import parse from 'html-react-parser'
 import microcms from "@/share/microcms";
+import Header from '@/components/header';
+import "@/share/global.scss";
 
 export async function generateStaticParams() {
   const data = await microcms.get({endpoint: "posts",fields:"title,updatedAt"})
@@ -14,6 +16,7 @@ export default async function FirstPost(params) {
 
   return (
     <div>
+      <Header></Header>
       <div id="main-content">{parse(post.content)}</div>
     </div>
   );
