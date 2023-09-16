@@ -1,3 +1,20 @@
 .header{
-    color: #FBEAEB;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    display: flex;
+    //color: #FBEAEB;
+    color: black;
+    background-color: rgba(255,255,255,0.4);
+    backdrop-filter: blur(6px);
+    border-bottom: 2px solid white;
+    a{
+        font-size: 1.5rem;
+        margin: 4px;
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+    :first-child{
+        flex: 1;
+    }
 }

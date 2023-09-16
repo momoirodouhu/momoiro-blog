@@ -1,3 +1,11 @@
+:root {
+    --txet-color-main : white;
+    --bg-color-main: #2F3C7E;
+}
+
+*{margin: 0;}
+
 body{
-    background-color:#2F3C7E;
+    color: var(--txet-color-main);
+    background-color: var(--bg-color-main);
 }
