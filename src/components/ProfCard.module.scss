@@ -1,0 +1,20 @@
+.prof_card{
+    border: 1px solid white;
+    border-radius: 8px;
+    .avatar{
+        padding: 4px;
+        width: 20%;
+        border-radius: 8px;
+        float: left;
+    }
+    .self_description{
+        padding-left: 10px;
+        display: flex;
+        flex-flow: column;
+        font-size: 24px;
+        color: var(--txet-color-main);
+        .detail{
+            font-size: var(--font-size-main);
+        }
+    }
+}

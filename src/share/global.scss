@@ -1,6 +1,7 @@
 :root {
     --txet-color-main : white;
     --bg-color-main: #2F3C7E;
+    --font-size-main: 16px;
 }
 
 *{margin: 0;}
@@ -8,4 +9,6 @@
 body{
     color: var(--txet-color-main);
     background-color: var(--bg-color-main);
+    overflow-wrap: break-word;
+    word-break: keep-all;
 }
