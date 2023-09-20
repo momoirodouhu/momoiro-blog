@@ -12,7 +12,8 @@
         overflow: hidden;
         display: none;
         @media screen and (min-width:1000px) {
-            display:initial;
+            display:flex;
+            flex-flow: column;
         }
     }
     .content{
