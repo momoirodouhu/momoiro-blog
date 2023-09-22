@@ -2,6 +2,7 @@ import parse from 'html-react-parser'
 import microcms from "@/share/microcms";
 import Header from '@/components/Header';
 import ProfCard from "@/components/ProfCard"
+import Description from '@/components/Description';
 import styles from "./post.module.scss"
 
 export async function generateStaticParams() {
@@ -15,13 +16,13 @@ export async function generateStaticParams() {
 export default async function FirstPost(params) {
   const ids = params.params.id
   const post = await microcms.get({endpoint: "posts",contentId:ids[0]})
-  //console.log(styles)
 
   return (
     <div>
       <Header></Header>
       <div id="main" className={styles.main}>
         <div className={styles.info}>
+          <Description post={post}></Description>
           <ProfCard></ProfCard>
         </div>
         <div id="content" className={styles.content}>{parse(post.content)}</div>

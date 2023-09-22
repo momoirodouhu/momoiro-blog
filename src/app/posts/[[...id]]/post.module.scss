@@ -15,6 +15,9 @@
             display:flex;
             flex-flow: column;
         }
+        >:not(:first-child){
+            margin-top: 12px;
+        }
     }
     .content{
         flex:1;
