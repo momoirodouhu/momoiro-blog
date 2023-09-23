@@ -1,39 +1,11 @@
-.main{
-    display: flex;
-    align-items: flex-start;
-    max-width: 1800px;
-    margin:auto ;
-    .info{
-        position: sticky;
-        top: 75px;
-        color: black;
-        width: 300px;
-        max-height: calc(100svh - 100px);
-        overflow: hidden;
-        display: none;
-        @media screen and (min-width:1000px) {
-            display:flex;
-            flex-flow: column;
-        }
-        >:not(:first-child){
-            margin-top: 12px;
-        }
+.content{
+    flex:1;
+    color: #FBEAEB;
+    img{
+        width: 100%;
+        height: auto;
     }
-    .content{
-        flex:1;
-        color: #FBEAEB;
-        img{
-            width: 100%;
-            height: auto;
-        }
-        p{
-            font-size: var(--font-size-main);
-        }
-    }
-    >*{
-        margin: 20px;
-    }
-    :not(:first-child){
-        margin-left: 0;
+    p{
+        font-size: var(--font-size-main);
     }
 }

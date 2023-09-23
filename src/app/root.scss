@@ -9,6 +9,8 @@
 body{
     color: var(--txet-color-main);
     background-color: var(--bg-color-main);
+    max-width: 1800px;
+    margin:auto ;
     overflow-wrap: break-word;
     word-break: keep-all;
 }

@@ -3,6 +3,7 @@ import microcms from "@/share/microcms";
 import Header from '@/components/Header';
 import ProfCard from "@/components/ProfCard"
 import Description from '@/components/Description';
+import global_styles from "@/share/global.module.scss"
 import styles from "./post.module.scss"
 
 export async function generateStaticParams() {
@@ -19,11 +20,11 @@ export default async function FirstPost(params) {
 
   return (
     <div>
-      <Header></Header>
-      <div id="main" className={styles.main}>
-        <div className={styles.info}>
+      <Header/>
+      <div id="main" className={global_styles.main}>
+        <div className={global_styles.info}>
           <Description post={post}></Description>
-          <ProfCard></ProfCard>
+          <ProfCard/>
         </div>
         <div id="content" className={styles.content}>{parse(post.content)}</div>
       </div>

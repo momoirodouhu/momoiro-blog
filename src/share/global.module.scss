@@ -1,0 +1,26 @@
+.main{
+    display: flex;
+    align-items: flex-start;
+    .info{
+        position: sticky;
+        top: 75px;
+        color: black;
+        width: 300px;
+        max-height: calc(100svh - 100px);
+        overflow: hidden;
+        display: none;
+        @media screen and (min-width:1000px) {
+            display:flex;
+            flex-flow: column;
+        }
+        >:not(:first-child){
+            margin-top: 12px;
+        }
+    }
+    >*{
+        margin: 20px;
+    }
+    :not(:first-child){
+        margin-left: 0;
+    }
+}
