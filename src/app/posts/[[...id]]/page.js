@@ -1,4 +1,4 @@
-import parse from 'html-react-parser'
+import parse, { domToReact } from 'html-react-parser'
 import microcms from "@/share/microcms";
 import Header from '@/components/Header';
 import ProfCard from "@/components/ProfCard"
@@ -15,6 +15,13 @@ export async function generateStaticParams() {
   return paths
 }
 
+const replace = (node) => {
+  if (node.name === 'img') {
+    node.attribs["class"] = ( node.attribs["class"] ?? "" ) + " " + styles.imgcontent
+    console.log(node.attribs)
+  }
+}
+
 export default async function FirstPost(params) {
   const ids = params.params.id
   const post = await microcms.get({endpoint: "posts",contentId:ids[0]})
@@ -29,7 +36,7 @@ export default async function FirstPost(params) {
         </div>
         <div id="content" className={styles.content}>
           <PostLink id="123456"/>
-          {parse(post.content)}
+          {parse(post.content,{ replace })}
         </div>
       </div>
     </div>
