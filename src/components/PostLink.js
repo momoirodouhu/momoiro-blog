@@ -1,9 +1,10 @@
 "use client"
+import global_styles from "@/share/global.module.scss"
 import styles from "./PostLink.module.scss"
 
 export default function Post_link({id}){
     return (
-        <div className={styles.postlink}>
+        <div className={`${styles.postlink} ${global_styles.box}`}>
             <img className={styles.postimg} src="https://dummyimage.com/600x400/333/fff&text=there+is+no+image"></img>
             <div className={styles.info}>
                 post: unknown post id

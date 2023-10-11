@@ -8,17 +8,14 @@ import global_styles from "@/share/global.module.scss"
 import styles from "./post.module.scss"
 
 export async function generateStaticParams() {
-  const data = await microcms.getAllContentIds({endpoint: "posts",fields:"title,updatedAt"})
-  console.log(data)
-  //const paths = data.contents.map((post) => ({id: [post.id.toString()],}));
-  const paths = data;
+  const paths = await microcms.getAllContentIds({endpoint: "posts",fields:"title,updatedAt"})
+  //console.log(paths)
   return paths
 }
 
 const replace = (node) => {
   if (node.name === 'img') {
     node.attribs["class"] = ( node.attribs["class"] ?? "" ) + " " + styles.imgcontent
-    console.log(node.attribs)
   }
 }
 
