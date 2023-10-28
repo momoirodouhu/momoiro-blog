@@ -4,7 +4,6 @@ import microcms from "@/share/microcms";
 import Header from '@/components/Header';
 import ProfCard from "@/components/ProfCard"
 import Description from '@/components/Description';
-import PostLink from "@/components/PostLink"
 import global_styles from "@/share/global.module.scss"
 import styles from "./post.module.scss"
 
