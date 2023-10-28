@@ -9,7 +9,6 @@ import styles from "./post.module.scss"
 
 export async function generateStaticParams() {
   var paths = await microcms.getAllContentIds({endpoint: "posts",fields:"title,updatedAt"})
-  console.log(paths)
   paths = paths.map((post) => ({id: [post],}))
   return paths
 }
@@ -21,7 +20,6 @@ const replace = (node) => {
 }
 
 export default async function FirstPost(params) {
-  console.log("first post")
   const ids = params.params.id
   const post = await microcms.get({endpoint: "posts",contentId:ids[0]})
 
