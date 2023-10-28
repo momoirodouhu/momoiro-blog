@@ -16,10 +16,6 @@ export default async function Home() {
         </div>
         <div className={styles.post_list}>
           {posts.map((post_id,index) => <PostLink id={post_id} key={index}/> )}
-          <PostLink id="123456"/>
-          <PostLink id="123456"/>
-          <PostLink id="123456"/>
-          <PostLink id="123456"/>
         </div>
       </div>
     </div>

@@ -33,7 +33,6 @@ export default async function FirstPost(params) {
           <ProfCard/>
         </div>
         <div id="content" className={styles.content}>
-          <PostLink id="123456"/>
           {parse(post.content,{ replace })}
         </div>
       </div>
