@@ -1,6 +1,6 @@
-import global_styles from "share/global.module.scss"
-import Header from "components/Header"
-import ProfCard from "components/ProfCard"
+import global_styles from "@/share/global.module.scss"
+import Header from "@/components/Header"
+import ProfCard from "@/components/ProfCard"
 
 export default function About() {
     return (

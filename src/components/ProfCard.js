@@ -1,4 +1,4 @@
-import global_styles from "share/global.module.scss"
+import global_styles from "@/share/global.module.scss"
 import styles from "./ProfCard.module.scss"
 
 export default function ProfCard(){

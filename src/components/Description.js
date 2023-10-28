@@ -1,6 +1,6 @@
-import global_styles from "share/global.module.scss"
+import global_styles from "@/share/global.module.scss"
 import styles from "./Description.module.scss"
-import DateTimeObj from "components/DateTimeObj"
+import DateTimeObj from "@/components/DateTimeObj"
 
 export default function description({post}) {
     return (

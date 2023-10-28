@@ -1,9 +1,9 @@
 import styles from "./root-index.module.scss"
-import global_styles from "share/global.module.scss"
-import microcms from "share/microcms"
-import Header from "components/Header"
-import ProfCard from "components/ProfCard"
-import PostLink from "components/PostLink"
+import global_styles from "@/share/global.module.scss"
+import microcms from "@/share/microcms"
+import Header from "@/components/Header"
+import ProfCard from "@/components/ProfCard"
+import PostLink from "@/components/PostLink"
 
 export default async function Home() {
   const posts = await microcms.getAllContentIds({endpoint: "posts",fields:"title,updatedAt"})

@@ -1,5 +1,5 @@
 "use client"
-import global_styles from "share/global.module.scss"
+import global_styles from "@/share/global.module.scss"
 import styles from "./PostLink.module.scss"
 
 export default function Post_link({id}){
