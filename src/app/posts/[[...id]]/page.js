@@ -1,4 +1,5 @@
-import parse, { domToReact } from 'html-react-parser'
+import parse from 'html-react-parser'
+import { notFound } from 'next/navigation'
 import microcms from "@/share/microcms";
 import Header from '@/components/Header';
 import ProfCard from "@/components/ProfCard"
@@ -21,7 +22,7 @@ const replace = (node) => {
 
 export default async function FirstPost(params) {
   const ids = params.params.id
-  const post = await microcms.get({endpoint: "posts",contentId:ids[0]})
+  const post = await microcms.get({endpoint: "posts",contentId:ids[0]}).catch(() => {return notFound()})
 
   return (
     <div>
