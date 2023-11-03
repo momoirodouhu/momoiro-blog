@@ -1,4 +1,5 @@
-import { parseISO, isBefore, differenceInDays } from 'date-fns';
+import { parseISO, differenceInDays } from 'date-fns';
+import microcms from '@/share/microcms';
 
 export default async function sitemap(){
     const rootUrl = "https://blog.momoiro.me"
