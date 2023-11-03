@@ -7,6 +7,7 @@ import PostLink from "@/components/PostLink"
 
 export default async function Home() {
   const posts = await microcms.getAllContentIds({endpoint: "posts",fields:"title,updatedAt"})
+  console.log(posts)
   return (
     <div>
       <Header/>
