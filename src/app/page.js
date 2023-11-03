@@ -6,7 +6,7 @@ import ProfCard from "@/components/ProfCard"
 import PostLink from "@/components/PostLink"
 
 export default async function Home() {
-  const posts = await microcms.getAllContentIds({endpoint: "posts",fields:"title,updatedAt"})
+  const posts = await microcms.getAllContentIds({endpoint: "posts",fields:"title,updatedAt",customRequestInit: {cache: "no-store"},})
   console.log(posts)
   return (
     <div>
