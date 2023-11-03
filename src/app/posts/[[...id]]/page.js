@@ -38,3 +38,10 @@ export default async function FirstPost(params) {
     </div>
   );
 }
+
+export async function generateMetadata(params){
+  const ids = params.params.id
+  const post = await microcms.get({endpoint: "posts",contentId:ids[0]});
+  console.log(post.title)
+  return {title: post.title};
+}
