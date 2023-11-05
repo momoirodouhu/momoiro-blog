@@ -3,7 +3,7 @@ import parse from 'html-react-parser'
 import { useSearchParams } from "next/navigation";
 import { redirect } from "next/navigation";
 import { useEffect } from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Header from '@/components/Header';
 import ProfCard from "@/components/ProfCard"
 import Description from '@/components/Description';
@@ -42,7 +42,8 @@ export default function Draft() {
                                 </div>
                             </>
                         )
-                        render(mainDom,document.getElementById("main"))
+                        const root = createRoot(document.getElementById("main"));
+                        root.render(mainDom)
                 }
             )}}).catch()
         }
