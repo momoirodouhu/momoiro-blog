@@ -26,7 +26,10 @@ export default function Draft() {
             isFirstUseEffect = false;
             fetch("/api/draft?"+params.toString(),{ cache: 'no-store' }).then(response =>{
                 if (response.status!=200){
-                    response.text().then(error_text => render((<p>error:{error_text}</p>),document.getElementById("main")))
+                    response.text().then(error_text => {
+                        const root = createRoot(document.getElementById("main"));
+                        root.render((<p>error:{error_text}</p>),document.getElementById("main"))
+                    })
                 }else{
                     response.json().then(post => {
                         console.log(post)

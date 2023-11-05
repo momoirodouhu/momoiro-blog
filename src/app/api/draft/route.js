@@ -3,7 +3,7 @@ import microcms from "@/share/microcms";
 
 export function GET(request) {
     const params = request.nextUrl.searchParams;
-    if(!(params.get("id") && params.get("draft_Key"))){
+    if((!params.get("id")) || (!params.get("draft_key"))){
         return NextResponse.json({ message: "Bad Request"}, { status: 400 })
     }
     console.log("draft proxy : " + params)
