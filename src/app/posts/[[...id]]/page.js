@@ -1,5 +1,4 @@
 import parse from 'html-react-parser'
-import { notFound } from 'next/navigation'
 import microcms from "@/share/microcms";
 import Header from '@/components/Header';
 import ProfCard from "@/components/ProfCard"
