@@ -1,14 +1,14 @@
-"use client"
+import microcms from "@/share/microcms";
 import global_styles from "@/share/global.module.scss"
 import styles from "./PostLink.module.scss"
 
-export default function Post_link({id}){
-    var path = "/posts/" + id
+export default async function Post_link({id}){
+    const post = await microcms.get({endpoint: "posts",contentId:id})
     return (
-        <a href={path} className={`${styles.postlink} ${global_styles.box}`}>
-            <img className={styles.postimg} src="https://dummyimage.com/1200x630/333/fff&text=there+is+no+image"></img>
+        <a href={"/posts/"+id} className={`${styles.postlink} ${global_styles.box}`}>
+            <img className={styles.postimg} src={post.eyecatch?.url || "https://dummyimage.com/1200x630/333/fff&text=there+is+no+image"}></img>
             <div className={styles.info}>
-                post: {id}
+                <h3>{post.title}</h3>
             </div>
         </a>
     )
