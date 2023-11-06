@@ -3,7 +3,8 @@ import microcms from '@/share/microcms';
 
 export default async function sitemap(){
     const rootUrl = "https://blog.momoiro.me"
-    const posts = await microcms.getAllContentIds({endpoint: "posts",fields:"title,updatedAt"})
+    var posts = await microcms.getAllContents({endpoint: "posts"})
+    posts = posts.map((post) => {return post.id})
     return [
         {
             url:rootUrl + "/",

@@ -8,8 +8,8 @@ import global_styles from "@/share/global.module.scss"
 import styles from "./post.module.scss"
 
 export async function generateStaticParams() {
-  var paths = await microcms.getAllContentIds({endpoint: "posts",fields:"title,updatedAt"})
-  paths = paths.map((post) => ({id: [post],}))
+  var paths = await microcms.getAllContents({endpoint: "posts"})
+  paths = paths.map((post) => {return {id: [post.id],}})
   return paths
 }
 
