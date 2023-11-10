@@ -2,7 +2,7 @@ import { parseISO, differenceInDays } from 'date-fns';
 import microcms from '@/share/microcms';
 
 export default async function sitemap(){
-    const rootUrl = "https://blog.momoiro.me"
+    const rootUrl = process.env.HOST_NAME
     var posts = await microcms.getAllContents({endpoint: "posts"})
     posts = posts.map((post) => {return post.id})
     return [
