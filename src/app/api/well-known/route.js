@@ -16,5 +16,6 @@ export function GET(request) {
             ]
         })
     }
-    return NextResponse.json({ message: "Bad Request"}, { status: 400 })
+    return NextResponse.json({ message: "Bad Request" ,
+        error_description:"Webfinger request is only acct:momoiro_archive@"+process.env.HOST_NAME}, { status: 400 })
 }
