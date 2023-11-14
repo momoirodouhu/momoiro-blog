@@ -21,7 +21,7 @@ export function GET(request) {
             "inbox": activitypub_url + "/inbox",
             "name": "桃色Archive",
             "outbox": activitypub_url + "/outbox",
-            "preferredUsername": "桃色Archive",
+            "preferredUsername": "momoiro_archive",
             "publicKey": {
                 "id": activitypub_url + "#main-key",
                 "owner": activitypub_url + "",
