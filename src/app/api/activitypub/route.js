@@ -2,10 +2,9 @@ import { NextResponse } from 'next/server';
 import blog_meta from "@/share/github"
 
 export function GET(request) {
-    console.log(request.nextUrl.pathname)
+    console.log("GET:"+request.nextUrl.pathname)
     if(request.nextUrl.pathname == "/activitypub"){
         const activitypub_url = "https://"+process.env.HOST_NAME+"/activitypub"
-        console.log("ap main")
         return NextResponse.json({
             "@context": [
                 "https://www.w3.org/ns/activitystreams",
@@ -35,6 +34,7 @@ export function GET(request) {
         })
     }
     if(request.nextUrl.pathname == "/activitypub/followers"){
+        //完全にテスト用
         return blog_meta.get_followers().then(followers => {
             console.log(followers)
             return NextResponse.json({ data: followers })
@@ -43,4 +43,11 @@ export function GET(request) {
         })
     }
     else{ return NextResponse.json({ message: "Bad Request"}, { status: 400 }) }
+}
+export function POST(request){
+    console.log("POST:"+request.nextUrl.pathname)
+    if(request.nextUrl.pathname == "/activitypub/inbox"){
+        console.log("inbox poted")
+        console.log(request)
+    }
 }

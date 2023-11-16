@@ -26,7 +26,29 @@ export default {
                     reject(error)
                 })
             })
-        }   },
+        },
+        set: function (path,content,message){
+            return new Promise((resolve, reject) => {
+                octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
+                    owner: 'momoirodouhu',
+                    repo: 'blog-meta',
+                    path: path,
+                    message: message,
+                    content: Buffer.from(content, "utf-8").toString("base64"),
+                    headers: {
+                        'X-GitHub-Api-Version': '2022-11-28'
+                    }
+                }).then(response => {
+                    console("updated file: " + path + " on github")
+                    resolve(response)
+                }).catch(error => {
+                    console.warn("failed to update " + path + " on github")
+                    console.log(error)
+                    reject(error)
+                })
+            })
+        },
+    },
     get_followers:function() {
         return new Promise((resolve, reject) => {
             this._wraper.get("_followers").then(response => {
@@ -34,4 +56,11 @@ export default {
             }).catch(error=>{reject(error)})
         })
     },
+    set_followers:function(acct){
+        return new Promise((resolve, reject) => {
+            this._wraper.get("_followers").then(response => {
+                resolve(response)
+            }).catch(error=>{reject(error)})
+        })
+    }
 }
