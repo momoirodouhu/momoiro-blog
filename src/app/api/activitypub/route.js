@@ -47,8 +47,8 @@ export function GET(request) {
 export function POST(request){
     console.log("POST:"+request.nextUrl.pathname)
     if(request.nextUrl.pathname == "/activitypub/inbox"){
-        console.log("content-type: "+request.headers['content-type'])
+        console.log("request headers: "+request.headers['content-type'])
         console.log("inbox poted")
-        console.log(JSON.parse(request.body))
+        console.log(request.body)
     }
 }
