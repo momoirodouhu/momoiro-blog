@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import blog_meta from "@/share/github"
 
 export function GET(request) {
     console.log(request.nextUrl.pathname)
@@ -33,5 +34,13 @@ export function GET(request) {
             "url": activitypub_url
         })
     }
-    return NextResponse.json({ message: "Bad Request"}, { status: 400 })
+    if(request.nextUrl.pathname == "/activitypub/followers"){
+        return blog_meta.get_followers().then(followers => {
+            console.log(followers)
+            return NextResponse.json({ data: followers })
+        }).catch(error => {
+            return NextResponse.json({ message: "Failed to get followers"}, { status: 500 })
+        })
+    }
+    else{ return NextResponse.json({ message: "Bad Request"}, { status: 400 }) }
 }

@@ -16,6 +16,7 @@
     "html-react-parser": "^4.2.2",
     "microcms-js-sdk": "^2.6.0",
     "next": "^14.0.0",
+    "octokit": "^3.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.67.0",
