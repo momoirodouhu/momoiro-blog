@@ -47,8 +47,18 @@ export function GET(request) {
 export function POST(request){
     console.log("POST:"+request.nextUrl.pathname)
     if(request.nextUrl.pathname == "/activitypub/inbox"){
-        console.log("request headers: "+request.headers['content-type'])
         console.log("inbox poted")
-        console.log(request.body)
+        console.log("content-type header: "+request.headers.get('content-type'))
+        request.json().then(activity => {
+            console.log(activity)
+            if(activity.type == "Follow"){
+                console.log("follow activity posted")
+            }
+            else if(activity.type == "Undo" && activity.object.type == "Follow"){
+                console.log("undo follow activity posted")
+            }
+            else{ return NextResponse.json({ message: "Now only follow and undo follow activities are supported"}, { status: 400 }) }
+        })
     }
+    else{ return NextResponse.json({ message: "Bad Request"}, { status: 400 }) }
 }
