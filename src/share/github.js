@@ -19,7 +19,7 @@ export default {
                         'X-GitHub-Api-Version': '2022-11-28'
                     }
                 }).then(response => {
-                    resolve(Buffer.from(response.data.content, "base64").toString("utf-8"))
+                    resolve({content:Buffer.from(response.data.content, "base64").toString("utf-8"),sha:response.data.sha})
                 }).catch(error => {
                     console.warn("failed to get from " + path + " on github")
                     console.log(error)
@@ -27,7 +27,7 @@ export default {
                 })
             })
         },
-        set: function (path,content,message){
+        set: function (path,sha,content,message){
             return new Promise((resolve, reject) => {
                 octokit.request('PUT /repos/{owner}/{repo}/contents/{path}', {
                     owner: 'momoirodouhu',
@@ -35,11 +35,12 @@ export default {
                     path: path,
                     message: message,
                     content: Buffer.from(content, "utf-8").toString("base64"),
+                    sha:sha,
                     headers: {
                         'X-GitHub-Api-Version': '2022-11-28'
                     }
                 }).then(response => {
-                    console("updated file: " + path + " on github")
+                    console.log("updated file: " + path + " on github")
                     resolve(response)
                 }).catch(error => {
                     console.warn("failed to update " + path + " on github")
@@ -51,15 +52,66 @@ export default {
     },
     get_followers:function() {
         return new Promise((resolve, reject) => {
-            this._wraper.get("_followers").then(response => {
-                resolve(response)
+            this._wraper.get("_followers").then(({content}) => {
+                try{
+                    resolve(JSON.parse(content).followers)
+                }catch (error) {
+                    console.warn(error)
+                    console.log(content)
+                    reject(error)
+                }
             }).catch(error=>{reject(error)})
         })
     },
-    set_followers:function(acct){
+    add_followers:function(acct){
         return new Promise((resolve, reject) => {
-            this._wraper.get("_followers").then(response => {
-                resolve(response)
+            this._wraper.get("_followers").then(({content,sha}) => {
+                try{
+                    var followers = JSON.parse(content).followers
+                    if(followers.includes(acct)){
+                        reject("already followed by "+acct)
+                    }
+                    else{
+                        followers.push(acct)
+                        this._wraper.set("_followers",sha,JSON.stringify({followers:followers}),"Followed by "+acct).then(response => {
+                            console.log("Unfollow request by "+acct+" success")
+                            resolve(acct)
+                        }).catch(error=>{
+                            console.warn(error)
+                            reject(error)
+                        })
+                    }
+                }catch (error) {
+                    console.warn(error)
+                    console.log(content)
+                    reject(error)
+                }
+            }).catch(error=>{reject(error)})
+        })
+    },
+    rm_followers:function(acct){
+        return new Promise((resolve, reject) => {
+            this._wraper.get("_followers").then(({content,sha}) => {
+                try{
+                    var followers = JSON.parse(content).followers
+                    if(!followers.includes(acct)){
+                        reject("not followed by "+acct)
+                    }
+                    else{
+                        followers.splice(followers.indexOf(acct), 1)
+                        this._wraper.set("_followers",sha,JSON.stringify({followers:followers}),"Unfollowed by "+acct).then(response => {
+                            console.log("Follow request by "+acct+" success")
+                            resolve()
+                        }).catch(error=>{
+                            console.warn(error)
+                            reject(error)
+                        })
+                    }
+                }catch (error) {
+                    console.warn(error)
+                    console.log(content)
+                    reject(error)
+                }
             }).catch(error=>{reject(error)})
         })
     }
