@@ -58,7 +58,6 @@ export default {
             const strTime = new Date().toUTCString()
             const pem = process.env.ACTOR_KEY
             const pemContents = pem.substring("-----BEGIN PRIVATE KEY-----".length, pem.length - "-----END PRIVATE KEY-----".length,);
-            console.log(pemContents)
             crypto.subtle.importKey(
                 "pkcs8",
                 Uint8Array.from(atob(pemContents), (c) => c.charCodeAt(0)),

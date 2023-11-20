@@ -53,6 +53,7 @@ export function POST(request) {
                     return blog_meta.add_followers(acct).then(response => {
                         return activitypub.accept_follow(activity).then(response => {
                             console.log("Follow request by "+acct+" success")
+                            console.log(response)
                             return NextResponse.json({ message: "ok" }, { status: 200 })
                         }).catch(error => {console.warn(error)})
                     }).catch(error => {console.warn(error)})
