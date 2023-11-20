@@ -98,6 +98,8 @@ export default {
         return new Promise((resolve, reject) => {
             this.get_actor(actor).then(({ inbox }) => {
                 this.sign_headers(body, inbox).then(headers => {
+                    console.log(header)
+                    console.log(body)
                     fetch(inbox, { method: "POST", body: body, headers }).then(response => {
                         console.log("success posting to index: " + inbox)
                         resolve(response.json())
