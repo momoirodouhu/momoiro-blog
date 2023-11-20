@@ -99,7 +99,7 @@ export default {
     post_to_inbox(actor, body) {
         return new Promise((resolve, reject) => {
             this.get_actor(actor).then(({inbox}) => {
-                sign_headers(body, inbox).then(headers => {
+                this.sign_headers(body, inbox).then(headers => {
                     fetch(inbox,{method : "POST" , body : body ,headers}).then(response => {
                         resolve(response.json())
                     }).catch(error => {reject(error)})
