@@ -52,15 +52,17 @@ export function POST(request) {
                 return activitypub.url_to_acct(activity.actor).then(acct => {
                     return blog_meta.add_followers(acct).then(response => {
                         return activitypub.accept_follow(activity).then(response => {
+                            console.log("Follow request by "+acct+" success")
                             return NextResponse.json({ message: "ok" }, { status: 200 })
                         }).catch(error => {console.warn(error)})
                     }).catch(error => {console.warn(error)})
                 }).catch(error => {console.warn(error)})
             }
-            else if (activity.type == "Undo" && activity.object.type == "Follow") {
+            else if(activity.type == "Undo" && activity.object.type == "Follow") {
                 console.log("undo follow activity posted")
                 return activitypub.url_to_acct(activity.actor).then(acct => {
                     return blog_meta.rm_followers(acct).then(response => {
+                        console.log("Unfollow request by "+acct+" success")
                         return NextResponse.json({ message: "ok" }, { status: 200 })
                     }).catch(error => {console.warn(error)})
                 }).catch(error => {console.warn(error)})

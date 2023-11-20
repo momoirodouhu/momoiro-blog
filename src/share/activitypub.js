@@ -1,6 +1,7 @@
 export default {
     url_to_acct(url) {
         return new Promise((resolve, reject) => {
+            console.log("url to acct: "+url)
             this.get_actor(url).then(actor => {
                 const name = actor.preferredUsername || actor.name
                 if (name == null) {
@@ -15,6 +16,7 @@ export default {
     },
     acct_to_url(acct) {
         return new Promise((resolve, reject) => {
+            console.log("acct to url: "+acct)
             try {
                 const hostname = acct.split("@")[1]
                 fetch("https://" + hostname + "/.well-known/webfinger?resource=acct:" + acct).then(response => {
@@ -29,6 +31,7 @@ export default {
     },
     get_actor(actor) {
         return new Promise((resolve, reject) => {
+            console.log("getting actor obj: "+actor)
             const actor_reqest = function (actor_url) {
                 console.log(actor_url)
                 fetch(actor_url, { headers: { "Accept": "application/activity+json" } }).then(response => {
@@ -101,6 +104,7 @@ export default {
             this.get_actor(actor).then(({inbox}) => {
                 this.sign_headers(body, inbox).then(headers => {
                     fetch(inbox,{method : "POST" , body : body ,headers}).then(response => {
+                        console.log("success posting to index: "+inbox)
                         resolve(response.json())
                     }).catch(error => {reject(error)})
                 }).catch(error => {reject(error)})
@@ -115,6 +119,7 @@ export default {
             actor: `https://` + process.env.HOST_NAME + `/activitypub`,
             object: follow_activity,
         }
+        console.log("posting accept follow: "+follow_activity.inbox)
         return this.post_to_inbox(follow_activity.actor,body)
     }
 }
