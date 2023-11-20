@@ -114,7 +114,7 @@ export default {
             id: `https://` + process.env.HOST_NAME + `/activitypub/activity/` + crypto.randomUUID(),
             type: 'Accept',
             actor: `https://` + process.env.HOST_NAME + `/activitypub`,
-            object: follow_activity,
+            object: structuredClone(follow_activity),
         }
         console.log("posting accept follow: " + follow_activity.actor)
         return this.post_to_inbox(follow_activity.actor, body)
