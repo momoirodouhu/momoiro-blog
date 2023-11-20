@@ -100,7 +100,7 @@ export default {
                 this.sign_headers(body, inbox).then(headers => {
                     console.log(headers)
                     console.log(body)
-                    fetch(inbox, { method: "POST", body: body, headers }).then(response => {
+                    fetch(inbox, { method: "POST", body: JSON.stringify(body), headers }).then(response => {
                         console.log("success posting to index: " + inbox)
                         resolve(response.json())
                     }).catch(error => { reject(error) })
