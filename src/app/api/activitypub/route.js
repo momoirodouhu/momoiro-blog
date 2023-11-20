@@ -43,8 +43,6 @@ export function GET(request) {
 export function POST(request) {
     console.log("POST:" + request.nextUrl.pathname)
     if (request.nextUrl.pathname == "/activitypub/inbox") {
-        console.log("inbox poted")
-        console.log("content-type header: " + request.headers.get('content-type'))
         return request.json().then(activity => {
             console.log(activity)
             if (activity.type == "Follow") {
