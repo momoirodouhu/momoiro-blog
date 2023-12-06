@@ -27,7 +27,7 @@ export function GET(request) {
             "publicKey": {
                 "id": activitypub_url + "#main-key",
                 "owner": activitypub_url + "",
-                "publicKeyPem": crypto.createPublicKey(process.env.ACTOR_KEY.split(String.raw`\n`).join('\n')).export({ type: "spki", format: "pem" }),
+                "publicKeyPem": crypto.createPublicKey(process.env.ACTOR_KEY.replace(/\\n/g, '\n')).export({ type: "spki", format: "pem" }),
                 "type": "Key"
             },
             "summary": "桃色ArchiveのActivityPub連合機能です",
