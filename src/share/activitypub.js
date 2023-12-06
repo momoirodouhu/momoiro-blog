@@ -1,3 +1,5 @@
+import crypto from 'crypto';
+
 export default {
     url_to_acct(url) {
         return new Promise((resolve, reject) => {
@@ -54,55 +56,40 @@ export default {
     sign_headers(body, inbox) {
         //minidon参考にというかほぼ同じ
         return new Promise((resolve, reject) => {
-            console.log("inbox: " + inbox)
             const strTime = new Date().toUTCString()
-            const pem = process.env.ACTOR_KEY
-            const pemContents = pem.substring("-----BEGIN PRIVATE KEY-----".length, pem.length - "-----END PRIVATE KEY-----".length,);
-            crypto.subtle.importKey(
-                "pkcs8",
-                Uint8Array.from(atob(pemContents), (c) => c.charCodeAt(0)),
-                { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256', },
-                false,
-                ["sign"]
-            ).then(crypt_key => {
-                crypto.subtle.digest('SHA-256', new TextEncoder().encode(JSON.stringify(body))).then(s => {
-                    const s256 = btoa(String.fromCharCode(...new Uint8Array(s)))
-                    crypto.subtle.sign(
-                        'RSASSA-PKCS1-v1_5',
-                        crypt_key,
-                        Uint8Array.from(`(request-target): post ` + new URL(inbox).pathname + `\n` +
-                            `host: ` + new URL(inbox).hostname + `\n` +
-                            `date: ` + strTime + `\n` +
-                            `digest: SHA-256=` + s256,
-                            (c) => c.charCodeAt(0))
-                    ).then(sig => {
-                        const headers = {
-                            Host: new URL(inbox).hostname,
-                            Date: strTime,
-                            Digest: `SHA-256=` + s256,
-                            Signature:
-                                `keyId="https://` + process.env.HOST_NAME + `/activitypub",` +
-                                `algorithm="rsa-sha256",` +
-                                `headers="(request-target) host date digest",` +
-                                `signature=` + btoa(String.fromCharCode(...new Uint8Array(sig))) + `"`,
-                            "Accept": 'application/activity+json',
-                            'Content-Type': 'application/activity+json',
-                        }
-                        resolve(headers)
-                    }).catch(error => { reject(error) })
-                }).catch(error => { reject(error) })
-            }).catch(error => { reject(error) })
-        }).catch(error => { reject(error) })
+            const pem = process.env.ACTOR_KEY.replace(/\\n/g, '\n')
+            const digestHeader = `SHA-256=${crypto.createHash('sha256').update(body).digest('base64')}`;
+            const signingString = [
+                `(request-target): post ${new URL(inbox).pathname}`,
+                `host: ${new URL(inbox).hostname}`,
+                `date: ${strTime}`,
+                `digest: ${digestHeader}`,
+            ].join("\n")
+            const signature = crypto.sign('sha256', Buffer.from(signingString), pem ).toString('base64');
+            const headers = {
+                Host: new URL(inbox).hostname,
+                Date: strTime,
+                Digest: digestHeader,
+                Signature:`keyId="https://${ process.env.HOST_NAME }/activitypub#main-key",algorithm="rsa-sha256",headers="(request-target) host date digest",signature="${signature}"`,
+                "Accept": 'application/activity+json',
+                'Content-Type': 'application/activity+json',
+            }
+            resolve(headers)
+        })
     },
-    post_to_inbox(actor, body) {
+    post_to_inbox(actor, object) {
         return new Promise((resolve, reject) => {
             this.get_actor(actor).then(({ inbox }) => {
-                this.sign_headers(body, inbox).then(headers => {
-                    console.dir(headers)
-                    console.dir(body)
-                    fetch(inbox, { method: "POST", body: JSON.stringify(body), headers }).then(response => {
-                        console.log("success posting to index: " + inbox)
-                        resolve(response.json())
+                this.sign_headers(JSON.stringify(object), inbox).then(headers => {
+                    fetch(inbox, { method: "POST", body: JSON.stringify(object), headers }).then(response => {
+                        if (response.ok) {
+                            console.log("success posting to index: " + inbox)
+                            resolve()
+                        } else {
+                            console.log("posting failed status: " + response.status)
+                            console.log(response)
+                            reject("posting failed status: " + response.status)
+                        }
                     }).catch(error => { reject(error) })
                 }).catch(error => { reject(error) })
             }).catch(error => { reject(error) })
