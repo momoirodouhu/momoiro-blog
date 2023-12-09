@@ -73,6 +73,7 @@ export default {
                         resolve()
                     }
                     else{
+                        console.log("adding follower: "+acct)
                         followers.push(acct)
                         this._wraper.set("_followers",sha,JSON.stringify({followers:followers}),"Followed by "+acct).then(response => {
                             resolve(acct)
@@ -99,6 +100,7 @@ export default {
                         resolve()
                     }
                     else{
+                        console.log("removing follower: "+acct)
                         followers.splice(followers.indexOf(acct), 1)
                         this._wraper.set("_followers",sha,JSON.stringify({followers:followers}),"Unfollowed by "+acct).then(response => {
                             resolve()
