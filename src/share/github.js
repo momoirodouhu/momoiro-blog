@@ -69,7 +69,8 @@ export default {
                 try{
                     var followers = JSON.parse(content).followers
                     if(followers.includes(acct)){
-                        reject("already followed by "+acct)
+                        console.log("already followed by "+acct)
+                        resolve()
                     }
                     else{
                         followers.push(acct)
@@ -94,7 +95,8 @@ export default {
                 try{
                     var followers = JSON.parse(content).followers
                     if(!followers.includes(acct)){
-                        reject("not followed by "+acct)
+                        console.log("not followed by "+acct)
+                        resolve()
                     }
                     else{
                         followers.splice(followers.indexOf(acct), 1)
