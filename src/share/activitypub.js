@@ -21,7 +21,7 @@ export default {
             console.log("acct to url: " + acct)
             try {
                 const hostname = acct.split("@")[1]
-                fetch("https://" + hostname + "/.well-known/webfinger?resource=acct:" + acct).then(response => {
+                fetch("https://" + hostname + "/.well-known/webfinger?resource=acct:" + acct , {cache: "no-store",} ).then(response => {
                     response.json().then(json => {
                         resolve(json.links.filter(link => link.type == "application/activity+json")[0].href)
                     }).catch(error => { reject(error) })
@@ -35,7 +35,7 @@ export default {
         return new Promise((resolve, reject) => {
             console.log("getting actor obj: " + actor)
             const actor_reqest = function (actor_url) {
-                fetch(actor_url, { headers: { "Accept": "application/activity+json" } }).then(response => {
+                fetch(actor_url, { headers: { "Accept": "application/activity+json" } , cache: "no-store", }).then(response => {
                     response.json().then(json => {
                         resolve(json)
                     }).catch(error => { reject(error) })
@@ -81,7 +81,7 @@ export default {
         return new Promise((resolve, reject) => {
             this.get_actor(actor).then(({ inbox }) => {
                 this.sign_headers(JSON.stringify(object), inbox).then(headers => {
-                    fetch(inbox, { method: "POST", body: JSON.stringify(object), headers }).then(response => {
+                    fetch(inbox, { method: "POST", body: JSON.stringify(object), headers ,cache: "no-store",}).then(response => {
                         if (response.ok) {
                             console.log("success posting to index: " + inbox)
                             resolve()

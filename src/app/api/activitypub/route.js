@@ -38,7 +38,7 @@ export function GET(request) {
     if (request.nextUrl.pathname == "/activitypub/test") {
         console.log("test")
         if(request.nextUrl.searchParams.has("url")){
-            return fetch(request.nextUrl.searchParams.get("url"), { headers: { "Accept": "application/activity+json" } }).then(response => {return response.text().then(text => {
+            return fetch(request.nextUrl.searchParams.get("url"), { headers: { "Accept": "application/activity+json" } ,cache: "no-store",}).then(response => {return response.text().then(text => {
                 return new NextResponse(text)
             })}).catch(error => new NextResponse.json({ message: "Bad Request" ,detail:error}, { status: 500 }))
         }else{
