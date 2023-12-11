@@ -78,22 +78,18 @@ export function POST(request) {
             console.log(activity)
             if (activity.type == "Follow") {
                 console.log("follow activity posted")
-                activitypub.url_to_acct(activity.actor).then(acct => {
-                    blog_meta.add_followers(acct).then(response => {
+                    blog_meta.add_followers(activity.actor).then(response => {
                         activitypub.accept_follow(activity).then(() => {
-                            console.log("Follow request by " + acct + " success")
+                            console.log("Follow request by " + activity.actor + " success")
                         }).catch(error => { console.warn(error) })
                     }).catch(error => { console.warn(error) })
-                }).catch(error => { console.warn(error) })
                 return NextResponse.json({ message: "ok" }, { status: 200 })
             }
             else if (activity.type == "Undo" && activity.object.type == "Follow") {
                 console.log("undo follow activity posted")
-                activitypub.url_to_acct(activity.actor).then(acct => {
-                    blog_meta.rm_followers(acct).then(response => {
-                        console.log("Unfollow request by " + acct + " success")
+                    blog_meta.rm_followers(activity.actor).then(response => {
+                        console.log("Unfollow request by " + activity.actor + " success")
                     }).catch(error => { console.warn(error) })
-                }).catch(error => { console.warn(error) })
                 return NextResponse.json({ message: "ok" }, { status: 200 })
             }
             else { return NextResponse.json({ message: "Now only follow and undo follow activities are supported" }, { status: 400 }) }

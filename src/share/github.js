@@ -63,20 +63,20 @@ export default {
             }).catch(error=>{reject(error)})
         })
     },
-    add_followers:function(acct){
+    add_followers:function(actor_url){
         return new Promise((resolve, reject) => {
             this._wraper.get("_followers").then(({content,sha}) => {
                 try{
                     var followers = JSON.parse(content).followers
-                    if(followers.includes(acct)){
-                        console.log("already followed by "+acct)
+                    if(followers.includes(actor_url)){
+                        console.log("already followed by "+actor_url)
                         resolve()
                     }
                     else{
-                        console.log("adding follower: "+acct)
-                        followers.push(acct)
-                        this._wraper.set("_followers",sha,JSON.stringify({followers:followers}),"Followed by "+acct).then(response => {
-                            resolve(acct)
+                        console.log("adding follower: "+actor_url)
+                        followers.push(actor_url)
+                        this._wraper.set("_followers",sha,JSON.stringify({followers:followers}),"Followed by "+actor_url).then(response => {
+                            resolve(actor_url)
                         }).catch(error=>{
                             console.warn(error)
                             reject(error)
@@ -90,19 +90,19 @@ export default {
             }).catch(error=>{reject(error)})
         })
     },
-    rm_followers:function(acct){
+    rm_followers:function(actor_url){
         return new Promise((resolve, reject) => {
             this._wraper.get("_followers").then(({content,sha}) => {
                 try{
                     var followers = JSON.parse(content).followers
-                    if(!followers.includes(acct)){
-                        console.log("not followed by "+acct)
+                    if(!followers.includes(actor_url)){
+                        console.log("not followed by "+actor_url)
                         resolve()
                     }
                     else{
-                        console.log("removing follower: "+acct)
-                        followers.splice(followers.indexOf(acct), 1)
-                        this._wraper.set("_followers",sha,JSON.stringify({followers:followers}),"Unfollowed by "+acct).then(response => {
+                        console.log("removing follower: "+actor_url)
+                        followers.splice(followers.indexOf(actor_url), 1)
+                        this._wraper.set("_followers",sha,JSON.stringify({followers:followers}),"Unfollowed by "+actor_url).then(response => {
                             resolve()
                         }).catch(error=>{
                             console.warn(error)
