@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { headers } from '../../next.config';
 
 export default {
     url_to_acct(url) {
@@ -34,12 +35,14 @@ export default {
     get_actor(actor) {
         return new Promise((resolve, reject) => {
             console.log("getting actor obj: " + actor)
-            const actor_reqest = function (actor_url) {
-                fetch(actor_url, { headers: { "Accept": "application/activity+json" } , cache: "no-store", }).then(response => {
-                    response.json().then(json => {
-                        resolve(json)
+            const actor_reqest = (actor_url) => {
+                this.sign_get_headers(actor_url).then(headers => {
+                    fetch(actor_url, { headers: headers , cache: "no-store", }).then(response => {
+                        response.json().then(json => {
+                            resolve(json)
+                        }).catch(error => { reject(error) })
                     }).catch(error => { reject(error) })
-                }).catch(error => { reject(error) })
+                })
             }
             if (/^https:\/\/[\w\(\)\.\-\/]+$/.test(actor)) {
                 //urlの時
@@ -53,21 +56,20 @@ export default {
             }
         })
     },
-    sign_headers(body, inbox) {
-        //minidon参考にというかほぼ同じ
+    sign_post_headers(body, url) {
         return new Promise((resolve, reject) => {
             const strTime = new Date().toUTCString()
             const pem = process.env.ACTOR_KEY.replace(/\\n/g, '\n')
             const digestHeader = `SHA-256=${crypto.createHash('sha256').update(body).digest('base64')}`;
             const signingString = [
-                `(request-target): post ${new URL(inbox).pathname}`,
-                `host: ${new URL(inbox).hostname}`,
+                `(request-target): post ${new URL(url).pathname}`,
+                `host: ${new URL(url).hostname}`,
                 `date: ${strTime}`,
                 `digest: ${digestHeader}`,
             ].join("\n")
             const signature = crypto.sign('sha256', Buffer.from(signingString), pem ).toString('base64');
             const headers = {
-                Host: new URL(inbox).hostname,
+                Host: new URL(url).hostname,
                 Date: strTime,
                 Digest: digestHeader,
                 Signature:`keyId="https://${ process.env.HOST_NAME }/activitypub#main-key",algorithm="rsa-sha256",headers="(request-target) host date digest",signature="${signature}"`,
@@ -77,10 +79,29 @@ export default {
             resolve(headers)
         })
     },
+    sign_get_headers(url) {
+        return new Promise((resolve, reject) => {
+            const strTime = new Date().toUTCString()
+            const pem = process.env.ACTOR_KEY.replace(/\\n/g, '\n')
+            const signingString = [
+                `(request-target): post ${new URL(url).pathname}`,
+                `host: ${new URL(url).hostname}`,
+                `date: ${strTime}`,
+            ].join("\n")
+            const signature = crypto.sign('sha256', Buffer.from(signingString), pem ).toString('base64');
+            const headers = {
+                Host: new URL(url).hostname,
+                Date: strTime,
+                Signature:`keyId="https://${ process.env.HOST_NAME }/activitypub#main-key",algorithm="rsa-sha256",headers="(request-target) host date digest",signature="${signature}"`,
+                "Accept": "application/activity+json"
+            }
+            resolve(headers)
+        })
+    },
     post_to_inbox(actor, object) {
         return new Promise((resolve, reject) => {
             this.get_actor(actor).then(({ inbox }) => {
-                this.sign_headers(JSON.stringify(object), inbox).then(headers => {
+                this.sign_post_headers(JSON.stringify(object), inbox).then(headers => {
                     fetch(inbox, { method: "POST", body: JSON.stringify(object), headers ,cache: "no-store",}).then(response => {
                         if (response.ok) {
                             console.log("success posting to index: " + inbox)
