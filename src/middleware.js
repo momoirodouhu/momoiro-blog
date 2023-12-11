@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server'
 
-export function middleware(req) {
-    //console.log(req.method +": "+ req.nextUrl.pathname)
-    if(req.headers.get("accept").includes("application/activity+json")){
-        return NextResponse.rewrite(new URL('/api/activitypub', req.url))
+export function middleware(request) {
+    //console.log(request.method +": "+ request.nextUrl.pathname)
+    if(request.headers.get("accept").includes("application/activity+json") ||
+    request.nextUrl.pathname.startsWith("/activitypub")){
+        return NextResponse.rewrite(new URL('/api/activitypub', request.url))
     }
 }

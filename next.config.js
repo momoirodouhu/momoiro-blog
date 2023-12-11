@@ -5,14 +5,6 @@ const nextConfig = {
             {
                 source: '/.well-known/:path',
                 destination: '/api/well-known',
-            },
-            {
-                source: '/activitypub',
-                destination: '/api/activitypub',
-            },
-            {
-                source: '/activitypub/:path',
-                destination: '/api/activitypub',
             }
         ]
     },
